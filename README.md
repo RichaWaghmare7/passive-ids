@@ -1,6 +1,6 @@
 <div align="center">
 
-# 🛡️ Passive-IDS
+# 🛡️ Dwarpal
 
 ### AI/ML-Powered Passive Intrusion Detection System for Critical Infrastructure
 
