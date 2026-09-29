@@ -440,18 +440,6 @@ This project is built for **Smart India Hackathon 2026 — Problem Statement 145
 
 ---
 
-## 📄 License
-
-This project is licensed under the MIT License. See [LICENSE](LICENSE) for details.
-
----
-
-<div align="center">
-
-**Built with ❤️ for Smart India Hackathon 2026**
-
-*Protecting critical infrastructure, one packet at a time.*
-
 [![SIH 2026](https://img.shields.io/badge/Smart%20India%20Hackathon-2026-orange?style=for-the-badge)](.)
 
 </div>
