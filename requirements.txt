@@ -1,0 +1,27 @@
+# Online / incremental models -- Hoeffding Tree, online metrics
+river>=0.21
+
+# Batch-retrained models
+scikit-learn>=1.4      # Isolation Forest, Logistic Regression, isotonic calibration
+lightgbm>=4.3
+xgboost>=2.0
+
+# Cardinality / frequency sketches for the always-on source aggregate
+datasketch>=1.6         # HyperLogLog
+mmh3>=4.1                # fast hashing for Count-Min Sketch
+
+# Schemas / config
+pydantic>=2.6
+pyyaml>=6.0
+
+# Packet capture and parsing (choose one capture backend; scapy is the
+# slow/prototyping option -- production capture should move to
+# AF_PACKET/eBPF or a Zeek/Suricata front end, per docs/architecture.md)
+scapy>=2.5
+
+# Application layer
+fastapi>=0.110
+uvicorn>=0.29
+
+# Testing
+pytest>=8.0

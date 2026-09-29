@@ -1,0 +1,56 @@
+# Per-class detection thresholds -- TEMPLATE.
+#
+# Each class gets its own thresholds and its own optimization
+# objective, derived from that class's precision-recall curve on
+# labeled data (public dataset first, then rolling SOC-verdict data
+# once the feedback loop is producing labels). No shared threshold
+# across classes -- see docs/architecture.md for why.
+
+classes:
+  ddos:
+    objective: "f_beta"
+    beta: 2.0                # favor recall -- missed volumetric attack is costly
+    high_threshold: null     # TODO: fit from PR curve
+    medium_threshold: null
+
+  c2_beaconing:
+    objective: "f_beta_or_min_precision"
+    beta: 2.0
+    min_precision: 0.90
+    high_threshold: null
+    medium_threshold: null
+
+  dga:
+    objective: "min_precision"
+    min_precision: 0.90      # high benign-domain volume floods SOC fast otherwise
+    high_threshold: null
+    medium_threshold: null
+
+  encrypted_malware:
+    objective: "f_beta"
+    beta: 2.0
+    high_threshold: null
+    medium_threshold: null
+
+  port_scanning:
+    objective: "min_precision"
+    min_precision: 0.95      # legitimate scanners/monitoring tools look similar
+    high_threshold: null
+    medium_threshold: null
+
+  exfiltration:
+    objective: "f1"          # balanced -- limited positive examples so far
+    high_threshold: null
+    medium_threshold: null
+
+calibration:
+  method: "isotonic_regression"
+  note: >
+    Fit one calibrator per threat_class, which is equivalent to one
+    per detector instance in this architecture (no two of the six
+    models share a threat_class). The distinction that actually
+    matters: NOT per model_name -- c2_beaconing and exfiltration both
+    report model_name="isolation_forest" (same string) despite being
+    separate fitted instances on unrelated feature distributions, so
+    keying by model_name would wrongly merge their calibration curves.
+    See calibration/calibrators.py's CalibratorRegistry.

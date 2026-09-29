@@ -1,0 +1,48 @@
+# SLA / escalation matrix -- TEMPLATE.
+#
+# Values below are placeholders. Do not treat them as production
+# targets. response_sla_minutes for CRITICAL/HIGH should be derived
+# from a risk budget (see docs/sla_matrix.md for the breakout-time
+# calculation) and verified against real arrival rates with the
+# Erlang-C staffing check before being trusted -- both need a pilot
+# deployment's measured alerts_per_hour, which does not exist yet.
+
+severities:
+  CRITICAL:
+    response_sla_minutes: null        # TODO: derive from breakout-time budget
+    resolution_sla_minutes: null
+    primary_owner: tier1_oncall
+    escalation_trigger: "no_ack_within_response_sla"
+    escalates_to: tier2_lead_paged
+    notification: ["pagerduty", "slack"]
+
+  HIGH:
+    response_sla_minutes: null         # TODO: Erlang-C, needs real lambda + AHT
+    resolution_sla_minutes: null
+    primary_owner: tier1
+    escalation_trigger: "no_verdict_within_resolution_sla OR analyst_confidence=LOW"
+    escalates_to: tier2
+    notification: ["slack", "dashboard"]
+
+  MEDIUM:
+    response_sla_minutes: null
+    resolution_sla_minutes: null
+    primary_owner: tier1_queue
+    escalation_trigger: "backlog_age_exceeds_target"
+    escalates_to: tier2
+    notification: ["dashboard"]
+
+  SAMPLED:
+    response_sla_minutes: null   # best-effort by design -- not incident response
+    resolution_sla_minutes: null # weekly batch
+    primary_owner: tier3
+    escalation_trigger: null     # deliberately none
+    escalates_to: null
+    notification: []
+
+staffing_calculation:
+  method: "erlang_c"
+  required_inputs_not_yet_available:
+    - "alerts_per_hour, by severity (needs pilot deployment)"
+    - "average_handling_time_minutes, by severity (needs pilot deployment)"
+  target_service_level: 0.90   # placeholder -- % of alerts meeting response_sla
